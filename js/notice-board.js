@@ -2,7 +2,7 @@
   if (window.__meowNoticeBoardLoaded) return;
   window.__meowNoticeBoardLoaded = true;
 
-  const API_BASE = "https://meow-service-test.flutterclone.com";
+  const API_BASE = "https://lemeowapis.meowadvancedintelligence.com";
   const SITE_SLUG = "meowrenovations-1785930255";
   const API_KEY = "site_17ae9f96c18a0e8a81d0363c3c91a025709fdb7bace738b2";
   const STORAGE_KEY = "dismissed_notices";

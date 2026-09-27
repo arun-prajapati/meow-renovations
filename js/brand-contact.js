@@ -3,7 +3,7 @@
 
   const script = document.currentScript;
   const brandSlug = script?.dataset.brandSlug;
-  const apiUrl = "https://meow-service-test.flutterclone.com/api/user/brand";
+  const apiUrl = "https://lemeowapis.meowadvancedintelligence.com/api/user/brand";
 
   if (!brandSlug) return;
 

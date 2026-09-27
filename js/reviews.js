@@ -1,6 +1,6 @@
 (function () {
   const API_BASE =
-    "https://meow-service-test.flutterclone.com/api/sites/meowrenovations-1785930255/reviews";
+    "https://lemeowapis.meowadvancedintelligence.com/api/sites/meowrenovations-1785930255/reviews";
   const HELPERS_HEAD = "site_17ae9f96c18a0e8a81d0363c3c91a025709fdb7bace738b2";
   const PER_PAGE = 7;
 

@@ -1,6 +1,6 @@
 (function () {
   const API_URL =
-    "https://meow-service-test.flutterclone.com/api/sites/meowrenovations-1785930255/blogs?nopaginate=1";
+    "https://lemeowapis.meowadvancedintelligence.com/api/sites/meowrenovations-1785930255/blogs?nopaginate=1";
 
   let cachedBlogs = null;
 
