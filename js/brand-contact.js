@@ -6,6 +6,8 @@
   const apiUrl = "https://lemeowapis.meowadvancedintelligence.com/api/user/brand";
 
   if (!brandSlug) return;
+  // Approved enquiry number; the legacy brand API can still return the previous number.
+  const fallbackContact = { phone: "+6588071780" };
 
   const contactAnchors = Array.from(
     document.querySelectorAll('a[href^="tel:"], a[href^="mailto:"], a[href*="wa.me/"]'),
@@ -19,7 +21,9 @@
     (row || (labelledListItem ? listItem : element)).hidden = true;
   };
 
-  contactAnchors.forEach(hideContact);
+  contactAnchors.forEach((anchor) => {
+    if (!/^(https:\/\/wa\.me\/\d+|tel:\+?\d+|mailto:[^@]+@)/.test(anchor.href)) hideContact(anchor);
+  });
   document.querySelectorAll("[data-brand-contact-list]").forEach((element) => {
     element.hidden = true;
   });
@@ -79,19 +83,19 @@
     );
     element.hidden = fields.length === 0;
     const section = element.closest("[data-brand-contact-section]");
-    if (section) section.hidden = fields.length === 0;
+    if (section) section.hidden = fields.length === 0 && !section.querySelector('a[href^="tel:"]');
   };
 
-  window.brandContactPromise = fetch(apiUrl, { headers: { Accept: "application/json" } })
+  window.brandContactPromise = fetch(apiUrl, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(10000) })
     .then((response) => {
       if (!response.ok) throw new Error(`Brand request failed (${response.status})`);
       return response.json();
     })
     .then((payload) => {
-      const brand = payload?.data?.find(
+      const apiBrand = payload?.data?.find(
         (item) => item.slug?.toLowerCase() === brandSlug.toLowerCase(),
       );
-      if (!brand) return;
+      const brand = { ...apiBrand, phone: fallbackContact.phone };
 
       contactAnchors.forEach((anchor) => {
         const href = anchor.getAttribute("href") || "";
@@ -111,10 +115,26 @@
         element.textContent = value;
         element.hidden = false;
       });
+      if (brand.address) {
+        const section = document.createElement("section");
+        section.style.cssText = "max-width:72rem;margin:2rem auto;padding:1rem";
+        const heading = document.createElement("h2");
+        heading.textContent = "Visit us";
+        const address = document.createElement("p");
+        address.textContent = brand.address;
+        const map = document.createElement("iframe");
+        map.title = "Business location";
+        map.src = `https://maps.google.com/maps?q=${encodeURIComponent(brand.address)}&output=embed`;
+        map.loading = "lazy";
+        map.referrerPolicy = "no-referrer-when-downgrade";
+        map.style.cssText = "width:100%;height:280px;border:0;border-radius:1rem;margin-top:1rem";
+        section.append(heading, address, map);
+        document.querySelector("footer")?.before(section);
+      }
       return brand;
     })
     .catch((error) => {
       console.error("Unable to load brand contact information", error);
-      return null;
+      return fallbackContact;
     });
 })();

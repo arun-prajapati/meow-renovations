@@ -115,10 +115,11 @@
     skeleton.style.display = "none";
 
     if (published.length === 0) {
-      empty.classList.remove("hidden");
+      document.getElementById("blog").hidden = true;
       return;
     }
 
+    document.getElementById("blog").hidden = false;
     const latest = published.slice(0, 3);
     latest.forEach((blog) => {
       grid.appendChild(createBlogCard(blog));

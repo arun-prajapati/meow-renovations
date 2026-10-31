@@ -158,6 +158,11 @@
 
     form.appendChild(grid);
 
+    const privacyNotice = document.createElement("p");
+    privacyNotice.style.cssText = "font-size:0.85rem;line-height:1.5";
+    privacyNotice.innerHTML = 'By submitting this enquiry, you consent to our use of your details to respond to your request, as described in our <a href="/privacy-policy.html" style="text-decoration:underline">Privacy Policy</a>.';
+    form.appendChild(privacyNotice);
+
     const submitWrap = document.createElement("div");
     submitWrap.className = "mr-submit-wrap";
     submitWrap.innerHTML = `
